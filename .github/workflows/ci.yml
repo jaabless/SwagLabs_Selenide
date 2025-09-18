@@ -22,10 +22,11 @@ jobs:
 
       # Step 4: Run Selenide tests inside Docker
       - name: Run Selenide tests
-        run: docker run --rm -v ${{ github.workspace }}/target:/app/target selenide-tests
+        run: docker run --rm -v ${{ github.workspace }}/target:/app/target my-maven-app
 
       # Step 5: Install Allure CLI
       - name: Install Allure CLI
+        if: always()
         run: |
            sudo apt-get update
            sudo apt-get install -y unzip
@@ -36,6 +37,7 @@ jobs:
 
       # Step 6: Generate Allure report
       - name: Generate Allure Report
+        if: always()
         run: allure generate ./target/allure-results --clean -o target/allure-report
 
       # Step 7: Deploy Allure report to GitHub Pages
