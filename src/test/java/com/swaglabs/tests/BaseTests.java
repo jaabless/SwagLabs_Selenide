@@ -14,10 +14,11 @@ public abstract class BaseTests {
 
     @BeforeMethod
     public void setUp() {
-        Configuration.browser = System.getProperty("selenide.browser", "chrome");
-//        Configuration.headless = Boolean.parseBoolean(System.getProperty("selenide.headless", "true")); // Default headless
+//        Configuration.browser = System.getProperty("selenide.browser", "chrome");
+        Configuration.headless = Boolean.parseBoolean(System.getProperty("selenide.headless", "true")); // Default headless
         Configuration.timeout = 10000; // 10s wait
         Configuration.reportsFolder = "target/selenide-reports"; // For screenshots
+//        Configuration.baseUrl = "https://www.saucedemo.com";
         logger.info("Starting test in {} browser, headless: {}", Configuration.browser, Configuration.headless);
     }
 
