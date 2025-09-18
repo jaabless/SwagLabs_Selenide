@@ -1,7 +1,9 @@
 package com.swaglabs.tests;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import com.swaglabs.utils.LoggerUtil;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.testng.annotations.AfterMethod;
@@ -56,6 +58,11 @@ public abstract class BaseTests {
         Configuration.browserCapabilities = options;
 
         logger.info("Starting test in {} browser, headless: {}", Configuration.browser, Configuration.headless);
+
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide()
+                        .screenshots(true)        // ✅ attach screenshots
+                        .savePageSource(true)); // ✅ attach page source
 
         // Open AFTER everything is configured
         open("https://www.saucedemo.com/");
