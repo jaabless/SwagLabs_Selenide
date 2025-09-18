@@ -28,7 +28,7 @@ public class LoginTests extends BaseTests {
 
     @Test(dataProvider = "loginData", description = "Test login scenarios")
     public void testLogin(String username, String password, boolean shouldSucceed, String expectedError) {
-        loginPage.openLoginPage();
+//        loginPage.openLoginPage();
         loginPage.login(username, password);
 
         if (shouldSucceed) {
