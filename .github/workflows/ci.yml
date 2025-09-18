@@ -20,9 +20,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t my-maven-app .
 
-      - name: Run tests inside container
-        run: docker run --rm my-maven-app
-
       # Step 4: Run Selenide tests inside Docker
       - name: Run Selenide tests
         run: docker run --rm -v ${{ github.workspace }}/target:/app/target selenide-tests
