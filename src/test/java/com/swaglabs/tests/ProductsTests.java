@@ -2,6 +2,10 @@ package com.swaglabs.tests;
 
 import com.swaglabs.testData.TestData;
 import com.swaglabs.pages.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,6 +16,9 @@ public class ProductsTests extends BaseTests {
     private ProductsPage productsPage = new ProductsPage();
 
     @Test(description = "Verify products page after login")
+    @Story("Products Page Functionality")
+    @Description("Verify products page displays correct number of items and allows adding to cart")
+    @Severity(SeverityLevel.MINOR)
     public void testProductsPage() {
         loginPage.openLoginPage();
         loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
@@ -24,6 +31,9 @@ public class ProductsTests extends BaseTests {
     }
 
     @Test(description = "Edge: No products visible (simulated invalid state)")
+    @Story("Products Page Functionality")
+    @Description("Simulate edge case where no products are visible after login")
+    @Severity(SeverityLevel.NORMAL)
     public void testEmptyProductsEdge() {
         // Assuming problem_user for glitchy behavior
         loginPage.openLoginPage();

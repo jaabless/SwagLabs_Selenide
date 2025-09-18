@@ -3,6 +3,10 @@ package com.swaglabs.tests;
 import com.swaglabs.testData.TestData;
 import com.swaglabs.testData.TestData;
 import com.swaglabs.pages.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -27,6 +31,9 @@ public class LoginTests extends BaseTests {
     }
 
     @Test(dataProvider = "loginData", description = "Test login scenarios")
+    @Story("Login Functionality")
+    @Description("Verify login functionality with various credentials")
+    @Severity(SeverityLevel.CRITICAL)
     public void testLogin(String username, String password, boolean shouldSucceed, String expectedError) {
 //        loginPage.openLoginPage();
         loginPage.login(username, password);

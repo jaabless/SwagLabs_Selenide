@@ -2,6 +2,10 @@ package com.swaglabs.tests;
 
 import com.swaglabs.testData.TestData;
 import com.swaglabs.pages.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -25,6 +29,9 @@ public class CheckoutTest extends BaseTests {
     }
 
     @Test(dataProvider = "checkoutData", description = "Test checkout scenarios")
+    @Description("Verify checkout process with various form inputs")
+    @Story("Checkout Functionality")
+    @Severity(SeverityLevel.CRITICAL)
     public void testCheckout(String first, String last, String zip, boolean shouldSucceed) {
         loginPage.openLoginPage();
         loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);

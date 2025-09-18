@@ -2,6 +2,10 @@ package com.swaglabs.tests;
 
 import com.swaglabs.testData.TestData;
 import com.swaglabs.pages.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,7 +14,10 @@ public class CartTests extends BaseTests {
     private ProductsPage productsPage = new ProductsPage();
     private CartPage cartPage = new CartPage();
 
-    @Test(description = "Test cart functionality")
+    @Test()
+    @Description("Verify adding an item to the cart updates the cart count")
+    @Story("Cart Functionality")
+    @Severity(SeverityLevel.CRITICAL)
     public void testAddToCart() {
         loginPage.openLoginPage();
         loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
@@ -20,7 +27,10 @@ public class CartTests extends BaseTests {
         logger.info("Cart verified");
     }
 
-    @Test(description = "Negative: Empty cart checkout")
+    @Test
+    @Description("Verify checkout with empty cart does not proceed")
+    @Story("Cart Functionality")
+    @Severity(SeverityLevel.MINOR)
     public void testEmptyCartNegative() {
         loginPage.openLoginPage();
         loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
@@ -33,6 +43,9 @@ public class CartTests extends BaseTests {
     }
 
     @Test(description = "Edge: Remove item from cart")
+    @Description("Verify removing an item from the cart updates the cart count")
+    @Story("Cart Functionality")
+    @Severity(SeverityLevel.NORMAL)
     public void testRemoveFromCartEdge() {
         loginPage.openLoginPage();
         loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
