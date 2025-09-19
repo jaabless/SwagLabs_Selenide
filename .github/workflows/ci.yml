@@ -29,10 +29,6 @@ jobs:
           docker cp test-run:/app/allure-results ./allure-results || echo "No report found"
           docker rm test-run
 
-      - name: List target directory
-        if: always()
-        run: ls -R target || true
-
       - name: Upload Allure results as artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -40,7 +36,7 @@ jobs:
           name: allure-results
           path: ./allure-results
 
-  deploy-allure-report:
+  generate-and-deploy-report:
     needs: build-and-test
     runs-on: ubuntu-latest
     if: always()
@@ -81,6 +77,62 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
+      - name: Send Slack notification
+        run: |
+            STATUS="${{ needs.zap_scan.result }}"
+            EMOJI=":x:"
+            COLOR="#FF0000"
+            STATUS_MSG="Build process failed"
+            if [ "$STATUS" = "success" ]; then
+              EMOJI=":white_check_mark:"
+              COLOR="#36A64F"
+              STATUS_MSG="Build completed successfully"
+            fi
+            curl -X POST -H 'Content-type: application/json' --data "{
+              \"attachments\": [
+                {
+                  \"color\": \"$COLOR\",
+                  \"blocks\": [
+                    {
+                      \"type\": \"section\",
+                      \"text\": {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"$EMOJI *OWASP ZAP CI/CD Pipeline*\\n*Status:* $STATUS_MSG\"
+                      }
+                    },
+                    {
+                      \"type\": \"section\",
+                      \"fields\": [
+                        {
+                          \"type\": \"mrkdwn\",
+                          \"text\": \"*Repo:* $GITHUB_REPOSITORY\"
+                        },
+                        {
+                          \"type\": \"mrkdwn\",
+                          \"text\": \"*Commit:* <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA%7C$GITHUB_SHA>\"
+                        },
+                        {
+                          \"type\": \"mrkdwn\",
+                          \"text\": \"*Workflow:* $GITHUB_WORKFLOW\"
+                        },
+                        {
+                          \"type\": \"mrkdwn\",
+                          \"text\": \"*Run:* <https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID%7C$GITHUB_RUN_ID>\"
+                        }
+                      ]
+                    },
+                    {
+                      \"type\": \"section\",
+                      \"text\": {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \":clipboard: *Reports:*\\n• Report: https://$GITHUB_REPOSITORY_OWNER.github.io/${{ github.event.repository.name }}/"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }" ${{ secrets.NEWSLETTER_CHANNEL }}    
+
       - name: Send Slack Notification
         uses: 8398a7/action-slack@v3
         with:
@@ -89,4 +141,3 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.NEWSLETTER_CHANNEL }}
-
