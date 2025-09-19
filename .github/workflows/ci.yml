@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: ./allure-results
+          path: target/allure-results
 
   deploy-allure-report:
     needs: build-and-test
