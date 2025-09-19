@@ -23,7 +23,7 @@ jobs:
       - name: Run tests inside container
         run: docker run --name test-run my-maven-app
 
-      - name: Copy Cucumber report
+      - name: Copy Allure results
         if: always()
         run: |
           docker cp test-run:/app/allure-results ./allure-results || echo "No report found"
@@ -73,7 +73,7 @@ jobs:
           publish_branch: gh-pages
 
   notify:
-    needs: [ build-and-test]
+    needs: [ build-and-test,generate-and-deploy-report ]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -134,6 +134,7 @@ jobs:
             }" ${{ secrets.NEWSLETTER_CHANNEL }}    
 
       - name: Send Slack Notification
+        if: always()
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ needs.build-and-test.result }}
