@@ -21,7 +21,7 @@ jobs:
         run: docker build -t my-maven-app .
 
       - name: Run tests inside container
-        run: docker run --rm my-maven-app
+        run: docker run --name test-run my-maven-app
 
       - name: Copy Cucumber report
         if: always()
