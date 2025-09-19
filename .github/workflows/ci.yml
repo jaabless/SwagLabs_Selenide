@@ -97,7 +97,7 @@ jobs:
                       \"type\": \"section\",
                       \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"$EMOJI *OWASP ZAP CI/CD Pipeline*\\n*Status:* $STATUS_MSG\"
+                        \"text\": \"$EMOJI *Selenide tests CI/CD Pipeline*\\n*Status:* $STATUS_MSG\"
                       }
                     },
                     {
@@ -109,7 +109,7 @@ jobs:
                         },
                         {
                           \"type\": \"mrkdwn\",
-                          \"text\": \"*Commit:* <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA%7C$GITHUB_SHA>\"
+                          \"text\": \"*Commit:* $GITHUB_COMMIT\"
                         },
                         {
                           \"type\": \"mrkdwn\",
@@ -133,12 +133,3 @@ jobs:
               ]
             }" ${{ secrets.NEWSLETTER_CHANNEL }}    
 
-      - name: Send Slack Notification
-        if: always()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ needs.build-and-test.result }}
-          text: ${{ needs.build-and-test.outputs.buildStatusMessage }}
-          fields: repo,message,commit,author,action,eventName,ref
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.NEWSLETTER_CHANNEL }}
