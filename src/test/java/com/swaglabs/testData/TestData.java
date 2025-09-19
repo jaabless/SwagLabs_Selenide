@@ -5,6 +5,9 @@ public class TestData {
     public static final String VALID_USERNAME = "standard_user";
     public static final String LOCKED_USERNAME = "locked_out_user";
     public static final String PROBLEM_USERNAME = "problem_user";
+    public static final String PERFORMANCE_USERNAME = "performance_glitch_user";
+    public static final String ERROR_USERNAME = "error_user"; // Hypothetical for error simulation
+    public static final String VISUAL_USERNAME = "visual_user"; // Hypothetical for visual testing
     public static final String INVALID_USERNAME = "invalid_user";
     public static final String PASSWORD = "secret_sauce";
     public static final String INVALID_PASSWORD = "wrong_pass";
