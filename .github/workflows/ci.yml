@@ -21,22 +21,50 @@ jobs:
         run: docker build -t my-maven-app .
 
       - name: Run tests inside container
-        run: docker run --name test-run my-maven-app
-
-      - name: Copy Cucumber report
-        if: always()
-        run: |
-          docker cp test-run:/app/target/allure-results ./allure-results || echo "No report found"
-          docker rm test-run
-          
+        run: docker run --rm my-maven-app
 
       - name: Upload Allure results as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: target/allure-results
+          path: ./allure-results
 
+  deploy-allure-report:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Allure results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: ./allure-results
+
+      # Step 5: Install Allure CLI
+      - name: Install Allure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          wget https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.zip
+          unzip allure-2.29.0.zip -d /opt/
+          sudo ln -s /opt/allure-2.29.0/bin/allure /usr/bin/allure
+          allure --version
+
+      # Step 6: Generate Allure report
+      - name: Generate Allure Report
+        run: allure generate ./target/allure-results --clean -o target/allure-report
+
+      # Step 7: Deploy Allure report to GitHub Pages
+      - name: Deploy Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          publish_dir: target/allure-report
+          publish_branch: gh-pages
 
   notify:
     needs: [ build-and-test]
