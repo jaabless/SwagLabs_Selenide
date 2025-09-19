@@ -10,4 +10,5 @@ public class ConfirmationPage extends BasePage {
         $(".complete-header").shouldHave(text(CONFIRMATION_TEXT));
         logger.info("Verified order confirmation");
     }
+
 }
