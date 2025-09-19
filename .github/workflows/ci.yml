@@ -26,8 +26,9 @@ jobs:
       - name: Copy Cucumber report
         if: always()
         run: |
-          docker cp test-run:/app/target ./ || echo "No report found"
+          docker cp test-run:/app/target/allure-results ./allure-results || echo "No report found"
           docker rm test-run
+          
 
       - name: Upload Allure results as artifact
         if: always()
