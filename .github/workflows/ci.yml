@@ -66,7 +66,7 @@ jobs:
 
       # Step 6: Generate Allure report
       - name: Generate Allure Report
-        run: allure generate ./target/allure-results --clean -o target/allure-report
+        run: allure generate ./allure-results --clean -o target/allure-report
 
       # Step 7: Deploy Allure report to GitHub Pages
       - name: Deploy Allure Report to GitHub Pages
