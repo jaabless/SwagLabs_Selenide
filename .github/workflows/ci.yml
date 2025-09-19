@@ -79,7 +79,7 @@ jobs:
     steps:
       - name: Send Slack notification
         run: |
-            STATUS="${{ needs.zap_scan.result }}"
+            STATUS="${{ needs.build-and-test.result }}"
             EMOJI=":x:"
             COLOR="#FF0000"
             STATUS_MSG="Build process failed"
