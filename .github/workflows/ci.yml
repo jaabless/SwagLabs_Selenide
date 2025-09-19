@@ -21,14 +21,24 @@ jobs:
         run: docker build -t my-maven-app .
 
       - name: Run tests inside container
-        run: docker run --rm my-maven-app
+        run: docker run --name test-run my-maven-app
+
+      - name: Copy Cucumber report
+        if: always()
+        run: |
+          docker cp test-run:/app/allure-results ./allure-results || echo "No report found"
+          docker rm test-run
+
+      - name: List target directory
+        if: always()
+        run: ls -R target || true
 
       - name: Upload Allure results as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: target/allure-results
+          path: ./allure-results
 
   deploy-allure-report:
     needs: build-and-test
