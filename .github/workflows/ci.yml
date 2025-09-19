@@ -109,7 +109,7 @@ jobs:
                         },
                         {
                           \"type\": \"mrkdwn\",
-                          \"text\": \"*Commit:* $GITHUB_COMMIT\"
+                          \"text\": \"*Commit:* <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA%7C$GITHUB_SHA>\"
                         },
                         {
                           \"type\": \"mrkdwn\",
