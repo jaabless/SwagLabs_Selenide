@@ -31,4 +31,8 @@ public class CartPage extends BasePage {
     public int getCartItemCount() {
         return cartItems.size();
     }
+
+    public boolean isCheckoutButtonEnabled() {
+        return checkoutButton.isEnabled();
+    }
 }
