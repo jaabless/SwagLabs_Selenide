@@ -6,11 +6,13 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
 
+@Test(groups = {"regression"})
 public class CheckoutTest extends BaseTests {
     private LoginPage loginPage = new LoginPage();
     private ProductsPage productsPage = new ProductsPage();
@@ -28,13 +30,18 @@ public class CheckoutTest extends BaseTests {
         };
     }
 
+    @BeforeMethod
+    public void setup() {
+        // Ensure starting from login page for each test
+        loginPage.openLoginPage();
+        loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
+    }
+
     @Test(dataProvider = "checkoutData", description = "Test checkout scenarios")
     @Description("Verify checkout process with various form inputs")
     @Story("Checkout Functionality")
     @Severity(SeverityLevel.CRITICAL)
     public void testCheckout(String first, String last, String zip, boolean shouldSucceed) {
-        loginPage.openLoginPage();
-        loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
         productsPage.addProductToCart(TestData.PRODUCT_NAME);
         productsPage.goToCart();
         cartPage.proceedToCheckout();
@@ -56,8 +63,6 @@ public class CheckoutTest extends BaseTests {
     @Story("Checkout Functionality")
     @Severity(SeverityLevel.NORMAL)
     public void testCheckoutOverview() {
-        loginPage.openLoginPage();
-        loginPage.login(TestData.VALID_USERNAME, TestData.PASSWORD);
         productsPage.addProductToCart(TestData.PRODUCT_NAME);
         productsPage.goToCart();
         cartPage.proceedToCheckout();
