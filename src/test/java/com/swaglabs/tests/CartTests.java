@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Test(groups = {"regression"})
 public class CartTests extends BaseTests {
     private LoginPage loginPage = new LoginPage();
     private ProductsPage productsPage = new ProductsPage();
