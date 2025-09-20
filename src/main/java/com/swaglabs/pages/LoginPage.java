@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class LoginPage extends BasePage {
     private SelenideElement usernameInput = $("#user-name");
     private SelenideElement passwordInput = $("#password");
-    private SelenideElement loginButton = $("#login-button");
+    public SelenideElement loginButton = $("#login-button");
 
     public void login(String username, String password) {
         usernameInput.setValue(username);
@@ -18,5 +18,9 @@ public class LoginPage extends BasePage {
 
     public void openLoginPage() {
         navigateTo("https://www.saucedemo.com/");
+    }
+
+    public boolean isLoginPageDisplayed() {
+        return loginButton.isDisplayed() && usernameInput.isDisplayed() && passwordInput.isDisplayed();
     }
 }
